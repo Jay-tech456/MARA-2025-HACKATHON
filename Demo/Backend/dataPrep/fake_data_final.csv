@@ -1,0 +1,21 @@
+Username,User ID,Location,Model,Hashrate (TH/s),Power (W),Efficiency (J/TH),Daily Rental Price ($/TH/s/day),Estimated Total Daily Rental Price ($),Estimated Hourly Rental Price ($)
+brittany96,u0001,"California, USA",Antminer S19 XP,187,5345,28.58,0.047,8.79,0.37
+john98,u0002,"Georgia, USA",Antminer S19j Pro+,213,6723,31.56,0.046,9.8,0.41
+pearsonrobert,u0003,"Nevada, USA",WhatsMiner M50S++,99,2682,27.09,0.043,4.26,0.18
+churchrobert,u0004,"Nevada, USA",Antminer T21,198,5119,25.85,0.048,9.5,0.4
+enavarro,u0005,"California, USA",WhatsMiner M60S,190,6038,31.78,0.042,7.98,0.33
+adamscarrie,u0006,"Texas, USA",Antminer S19k Pro,134,3829,28.57,0.043,5.76,0.24
+xhobbs,u0007,"Ohio, USA",AvalonMiner 1266,101,2202,21.8,0.043,4.34,0.18
+michaelwilkins,u0008,"Nevada, USA",WhatsMiner M30S++,152,3994,26.28,0.043,6.54,0.27
+elizabethdickson,u0009,"Georgia, USA",Antminer S19a Pro,154,4808,31.22,0.047,7.24,0.3
+francis32,u0010,"New York, USA",Antminer T19,111,2464,22.2,0.047,5.22,0.22
+john30,u0011,"Texas, USA",WhatsMiner M50,137,3087,22.53,0.042,5.75,0.24
+sandersalicia,u0012,"New York, USA",Antminer S17+,217,4717,21.74,0.048,10.42,0.43
+hensleydavid,u0013,"Alberta, Canada",WhatsMiner M31S+,152,3872,25.47,0.047,7.14,0.3
+fhill,u0014,"Alberta, Canada",AvalonMiner 1246,218,6532,29.96,0.044,9.59,0.4
+gordonmicheal,u0015,"New York, USA",Antminer S19 Pro Hydro,120,2705,22.54,0.047,5.64,0.24
+ypowell,u0016,"North Dakota, USA",WhatsMiner M33S++,90,1984,22.04,0.048,4.32,0.18
+brandypratt,u0017,"New York, USA",Antminer S21,216,4785,22.15,0.043,9.29,0.39
+kylemartinez,u0018,"California, USA",WhatsMiner M63,202,5905,29.23,0.045,9.09,0.38
+aguilarshane,u0019,"New York, USA",AvalonMiner 1166 Pro,152,4438,29.2,0.046,6.99,0.29
+clowery,u0020,"North Dakota, USA",Antminer S19e XP,220,6621,30.1,0.045,9.9,0.41
