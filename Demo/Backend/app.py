@@ -12,7 +12,10 @@ JSON_DIR = os.path.join(os.getcwd(), "data")
 app = Flask(__name__)
 CORS(
     app,
-    resources={r"/ask": {"origins": "http://localhost:3000"}},
+    resources={
+        r"/ask": {"origins": "http://localhost:3000"},
+        r"/asic-data": {"origins": "http://localhost:3000"},
+    },
     supports_credentials=True,
 )
 
