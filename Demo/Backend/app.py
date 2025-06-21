@@ -2,7 +2,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from langchain_core.messages import HumanMessage
 from Workflow.workflow import workflow
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
+import json
 
+JSON_DIR = os.path.join(os.getcwd(), "data")
 app = Flask(__name__)
 CORS(app, resources={r"/ask": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
@@ -10,9 +15,14 @@ CORS(app, resources={r"/ask": {"origins": "http://localhost:3000"}}, supports_cr
 graph_instance = workflow()
 graph = graph_instance.get_graph()
 
-@app.route('/')
-def home():
-    return jsonify({"message": "Hello, World!"})
+@app.route('/asic-data')
+def fetch_json():
+    try:
+        with open('Data/FakeRecord.json', 'r') as f:
+             data = [json.loads(line) for line in f]
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/ask', methods=['POST'])
 def ask_agent():
@@ -33,6 +43,11 @@ def ask_agent():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
