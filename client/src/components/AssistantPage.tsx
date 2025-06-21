@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Bot } from "lucide-react";
+import { useState } from 'react';
+import { Bot } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -19,15 +19,16 @@ interface AssistantPageProps {
 const AssistantPage = ({ onRentSystem }: AssistantPageProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: "1",
+      id: '1',
       text: "Hi! I'm your ASIC rental assistant. Tell me about your use case and I'll recommend the perfect system for you!",
       isBot: true,
     },
   ]);
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendMessage = () => {
-    if (!inputText.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputText.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -36,23 +37,60 @@ const AssistantPage = ({ onRentSystem }: AssistantPageProps) => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:5000/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          session_id: `session_${Date.now()}`, // Generate a unique session ID
+          message: inputText,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Create bot message based on the API response
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Based on your requirements, I recommend the AIChip Accelerator V3. It's perfect for machine learning workloads with its 250 TOPS compute power and 64GB HBM2 memory.",
+        text:
+          data.response ||
+          "I'm sorry, I couldn't process your request at the moment.",
         isBot: true,
-        recommendation: {
-          systemName: "AIChip Accelerator V3",
-          reasoning: "High compute power and memory capacity ideal for AI/ML tasks",
-          systemId: "asic-002",
-        },
+        recommendation: data.recommendation
+          ? {
+              systemName:
+                data.recommendation.systemName || 'Recommended System',
+              reasoning:
+                data.recommendation.reasoning || 'Based on your requirements',
+              systemId: data.recommendation.systemId || 'asic-default',
+            }
+          : undefined,
       };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 1000);
 
-    setInputText("");
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error calling API:', error);
+
+      // Add error message
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "I'm sorry, I'm having trouble connecting to my systems right now. Please try again later.",
+        isBot: true,
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+      setInputText('');
+    }
   };
 
   return (
@@ -75,17 +113,19 @@ const AssistantPage = ({ onRentSystem }: AssistantPageProps) => {
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
+                className={`flex ${
+                  message.isBot ? 'justify-start' : 'justify-end'
+                }`}
               >
                 <div
                   className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                     message.isBot
-                      ? "bg-gray-100 text-gray-900"
-                      : "bg-blue-600 text-white"
+                      ? 'bg-gray-100 text-gray-900'
+                      : 'bg-blue-600 text-white'
                   }`}
                 >
                   <p>{message.text}</p>
-                  
+
                   {message.recommendation && (
                     <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
                       <h4 className="font-semibold text-green-800 mb-1">
@@ -96,7 +136,9 @@ const AssistantPage = ({ onRentSystem }: AssistantPageProps) => {
                       </p>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => onRentSystem(message.recommendation!.systemId)}
+                          onClick={() =>
+                            onRentSystem(message.recommendation!.systemId)
+                          }
                           className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors"
                         >
                           Rent Now
@@ -110,6 +152,17 @@ const AssistantPage = ({ onRentSystem }: AssistantPageProps) => {
                 </div>
               </div>
             ))}
+
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-gray-100 text-gray-900">
+                  <div className="flex items-center space-x-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-600"></div>
+                    <span className="text-sm">Thinking...</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="border-t p-4">
@@ -118,15 +171,17 @@ const AssistantPage = ({ onRentSystem }: AssistantPageProps) => {
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Describe your use case (e.g., training a deep learning model)..."
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                disabled={isLoading}
               />
               <button
                 onClick={handleSendMessage}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                disabled={isLoading || !inputText.trim()}
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                Send
+                {isLoading ? 'Sending...' : 'Send'}
               </button>
             </div>
           </div>

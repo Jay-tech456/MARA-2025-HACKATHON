@@ -1,38 +1,42 @@
-
 import time
 from langchain_core.messages import SystemMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_ollama import OllamaEmbeddings
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage
-import sys 
+import sys
 import os
 from langchain_mistralai import ChatMistralAI
 import time
 import dotenv
+
 dotenv.load_dotenv()
 # Having a system path so that the files are all readable
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 from tools.utility import tools
 from utils.utils import AgentState
 
-class Agent(): 
+
+class Agent:
     def __init__(self):
-        self.mistral_model = ChatMistralAI(model="mistral-large-latest", temperature=0, api_key="")
+        self.mistral_model = ChatMistralAI(
+            model="mistral-large-latest",
+            temperature=0,
+            api_key="b5BKS19Dnp3ypIzvT03pDrqFDr970XcJ",
+        )
 
         # embeddings = OllamaEmbeddings(model="nomic-embed-text")
 
         Tool = tools()
         self.tools = Tool.toolkit()
 
-        
         self.model_with_tool = self.mistral_model.bind_tools(self.tools)
-    
+
     def system_prompt(self) -> SystemMessage:
         """The system prompt for the Bitcoin recruiting agent with candidate tools."""
         return SystemMessage(
-        content=(
-            """
+            content=(
+                """
             CONSIDER YOURSELF AS A BITCOIN MINING EXPERT AND PERSONAL ADVISOR. YOU HAVE CERTAIN OBJECTIVES AND GOALS TO FOLLOW.  
             YOU MUST FOLLOW A STRUCTURED PROCESS TO GIVE THE FINAL DECISION.
 
@@ -106,17 +110,15 @@ class Agent():
             }
             - Output must be valid JSON with no additional commentary or text.
             """
+            )
         )
-    )
-
-
 
     def run_agent(self, state: AgentState, config: RunnableConfig) -> dict:
         time.sleep(3)
         model = self.mistral_model.bind_tools([tools])
 
-        response = self.model_with_tool.invoke([self.system_prompt()] + state["messages"], config)
+        response = self.model_with_tool.invoke(
+            [self.system_prompt()] + state["messages"], config
+        )
 
-        
         return {"messages": [response]}
-

@@ -4,27 +4,34 @@ from langchain_core.messages import HumanMessage
 from Workflow.workflow import workflow
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
+
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 import json
 
 JSON_DIR = os.path.join(os.getcwd(), "data")
 app = Flask(__name__)
-CORS(app, resources={r"/ask": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(
+    app,
+    resources={r"/ask": {"origins": "http://localhost:3000"}},
+    supports_credentials=True,
+)
 
 
 graph_instance = workflow()
 graph = graph_instance.get_graph()
 
-@app.route('/asic-data')
+
+@app.route("/asic-data")
 def fetch_json():
     try:
-        with open('Data/seller_data.json', 'r') as f:
-             data = [json.loads(line) for line in f]
+        with open("./Data/seller_data.json", "r") as f:
+            data = json.load(f)  # Load the entire JSON array at once
         return jsonify(data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/ask', methods=['POST'])
+
+@app.route("/ask", methods=["POST"])
 def ask_agent():
     data = request.get_json()
     session_id = data.get("session_id")
@@ -34,20 +41,18 @@ def ask_agent():
 
     config = {"configurable": {"session_id": session_id, "thread_id": session_id}}
     try:
-        
-        result = graph.invoke({"messages": [HumanMessage(content=user_message)]}, config=config)
+
+        result = graph.invoke(
+            {"messages": [HumanMessage(content=user_message)]}, config=config
+        )
         messages = result.get("messages", [])
         response_text = messages[-1].content if messages else "No response generated."
 
         return jsonify({"response": response_text})
-    
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
 
 
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True, port=5000)
