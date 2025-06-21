@@ -18,7 +18,7 @@ graph = graph_instance.get_graph()
 @app.route('/asic-data')
 def fetch_json():
     try:
-        with open('Data/FakeRecord.json', 'r') as f:
+        with open('Data/seller_data.json', 'r') as f:
              data = [json.loads(line) for line in f]
         return jsonify(data)
     except Exception as e:
