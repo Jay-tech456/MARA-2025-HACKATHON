@@ -68,3 +68,44 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+# 🧠 Bitcoin Mining Advisor API
+
+This project provides a Bitcoin ASIC recommendation agent via two RESTful API endpoints:
+
+- `POST /ask` — Invoke the AI advisor with a session and message.
+- `GET /asic-data` — Retrieve rentable ASIC infrastructure.
+
+---
+
+## 🚀 API Endpoints
+
+### 🔹 POST `/ask`
+
+Invoke the intelligent agent by sending a message along with a session identifier. The agent will analyze the message and respond with ASIC recommendations or relevant system responses.
+
+#### ✅ Request
+
+- **URL**: `/ask`
+- **Method**: `POST`
+- **Content-Type**: `application/json`
+
+#### 🔸 Body Parameters
+
+| Field       | Type   | Required | Description                            |
+|-------------|--------|----------|----------------------------------------|
+| `session_id`| string | ✅       | Unique identifier for user session     |
+| `message`   | string | ✅       | Message or question for the agent      |
+
+#### 🧪 Example `curl`
+
+```bash
+curl -X POST http://localhost:5000/ask \
+  -H "Content-Type: application/json" \
+  -d '{
+        "session_id": "session123",
+        "message": "What is the best ASIC miner for a $2000 budget?"
+      }'
+
