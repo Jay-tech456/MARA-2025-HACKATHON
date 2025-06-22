@@ -13,8 +13,8 @@ app = Flask(__name__)
 CORS(
     app,
     resources={
-        r"/ask": {"origins": "http://localhost:3000"},
-        r"/asic-data": {"origins": "http://localhost:3000"},
+        r"/ask": {"origins": "*"},
+        r"/asic-data": {"origins": "*"},
     },
     supports_credentials=True,
 )
