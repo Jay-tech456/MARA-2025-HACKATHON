@@ -4,28 +4,446 @@ import json
 from typing import Dict, Any, List
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
+
+
+renter_data = [
+    {
+        "User ID": "buyer_0001",
+        "Username": "tyler46",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/us-east.stratum.slushpool.com:3333",
+        "Wallet Address": "bc1qhgldhjrylzyjpyfowdkatcyuvr",
+        "Worker Name": "buyer_worker_0",
+    },
+    {
+        "User ID": "buyer_0002",
+        "Username": "kacosta",
+        "Location": "Oregon, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qyhxvfpsrjgapaotyxjokyynfcnn",
+        "Worker Name": "buyer_worker_1",
+    },
+    {
+        "User ID": "buyer_0003",
+        "Username": "currykristina",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qhiaflrazikyavypxercvreeazea",
+        "Worker Name": "buyer_worker_2",
+    },
+    {
+        "User ID": "buyer_0004",
+        "Username": "robert97",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qrjncvmrmtxfgtqajfuxacvyewknqy",
+        "Worker Name": "buyer_worker_3",
+    },
+    {
+        "User ID": "buyer_0005",
+        "Username": "youngashley",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qntdmcjoulzhgptbcibvptmbqxs",
+        "Worker Name": "buyer_worker_4",
+    },
+    {
+        "User ID": "buyer_0006",
+        "Username": "bschneider",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qonusefwfwyhxwihsbjodqghnxjumar",
+        "Worker Name": "buyer_worker_5",
+    },
+    {
+        "User ID": "buyer_0007",
+        "Username": "ahughes",
+        "Location": "Tokyo, Japan",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qdsvjkyihdyihiermvgbvsubis",
+        "Worker Name": "buyer_worker_6",
+    },
+    {
+        "User ID": "buyer_0008",
+        "Username": "brian59",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/us2.ghash.io:3333",
+        "Wallet Address": "bc1qpuqbbagspoiusbvpmiqhqchcbxll",
+        "Worker Name": "buyer_worker_7",
+    },
+    {
+        "User ID": "buyer_0009",
+        "Username": "lauren86",
+        "Location": "Oregon, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qqilqncgdfkyewprillgyesabdxbh",
+        "Worker Name": "buyer_worker_8",
+    },
+    {
+        "User ID": "buyer_0010",
+        "Username": "michellebaker",
+        "Location": "Ohio, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qgsakrauplixekhrpdyeiqmoatohnzd",
+        "Worker Name": "buyer_worker_9",
+    },
+    {
+        "User ID": "buyer_0011",
+        "Username": "baldwinrussell",
+        "Location": "Nevada, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qgpntbqncclpdtborvdgjnkfknmdvch",
+        "Worker Name": "buyer_worker_10",
+    },
+    {
+        "User ID": "buyer_0012",
+        "Username": "eatonstephen",
+        "Location": "New York, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qjyfolwlotwwndpnjcklqcqcazfyw",
+        "Worker Name": "buyer_worker_11",
+    },
+    {
+        "User ID": "buyer_0013",
+        "Username": "awilson",
+        "Location": "Ohio, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qystjlynrufokmkivnljdjyjsfwz",
+        "Worker Name": "buyer_worker_12",
+    },
+    {
+        "User ID": "buyer_0014",
+        "Username": "uwalter",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qzodwbbaegupyvkbmovyzshnalm",
+        "Worker Name": "buyer_worker_13",
+    },
+    {
+        "User ID": "buyer_0015",
+        "Username": "davisjason",
+        "Location": "California, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qazrxxulaoqrgmxeorihfkbpcuo",
+        "Worker Name": "buyer_worker_14",
+    },
+    {
+        "User ID": "buyer_0016",
+        "Username": "wardsydney",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qettqticwpmrnrzndbnjcdmktvwj",
+        "Worker Name": "buyer_worker_15",
+    },
+    {
+        "User ID": "buyer_0017",
+        "Username": "hamiltonpatrick",
+        "Location": "California, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qqbzyfhjkhebkylvmnvxfvkufqktxnn",
+        "Worker Name": "buyer_worker_16",
+    },
+    {
+        "User ID": "buyer_0018",
+        "Username": "ijohnston",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qkfaszqqzyhdekuxsukunichsaxao",
+        "Worker Name": "buyer_worker_17",
+    },
+    {
+        "User ID": "buyer_0019",
+        "Username": "rebecca29",
+        "Location": "New York, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qbeqxkpowoexekplgbqzzifttipa",
+        "Worker Name": "buyer_worker_18",
+    },
+    {
+        "User ID": "buyer_0020",
+        "Username": "john35",
+        "Location": "Frankfurt, Germany",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qausyoejzumdhzfvmfztwotewjez",
+        "Worker Name": "buyer_worker_19",
+    },
+    {
+        "User ID": "buyer_0021",
+        "Username": "nking",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/us-east.stratum.slushpool.com:3333",
+        "Wallet Address": "bc1qpcweyrtwkocyvhfdcgynicwkmawp",
+        "Worker Name": "buyer_worker_20",
+    },
+    {
+        "User ID": "buyer_0022",
+        "Username": "sherrihowell",
+        "Location": "New York, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qpduyiiuxhrzmfnnfnttzavvyeqqn",
+        "Worker Name": "buyer_worker_21",
+    },
+    {
+        "User ID": "buyer_0023",
+        "Username": "justinlandry",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/us2.ghash.io:3333",
+        "Wallet Address": "bc1qypvnkukxcmiopxumrrzqgtbwbtrf",
+        "Worker Name": "buyer_worker_22",
+    },
+    {
+        "User ID": "buyer_0024",
+        "Username": "michael56",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/us-east.stratum.slushpool.com:3333",
+        "Wallet Address": "bc1qprnkuaykdwoyessxjdyqgzofaf",
+        "Worker Name": "buyer_worker_23",
+    },
+    {
+        "User ID": "buyer_0025",
+        "Username": "thomashenry",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/us2.ghash.io:3333",
+        "Wallet Address": "bc1qwbkbcykcinqxmpoekldwzgxwtpxgk",
+        "Worker Name": "buyer_worker_24",
+    },
+    {
+        "User ID": "buyer_0026",
+        "Username": "parkerkristen",
+        "Location": "Georgia, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qiekccrxmlgyxszlotwycsrzhp",
+        "Worker Name": "buyer_worker_25",
+    },
+    {
+        "User ID": "buyer_0027",
+        "Username": "kenneth64",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qpsjzbvmkndjuigwzevlhvzrxbl",
+        "Worker Name": "buyer_worker_26",
+    },
+    {
+        "User ID": "buyer_0028",
+        "Username": "michael72",
+        "Location": "Alberta, Canada",
+        "Pool URL": "stratum+tcp:\/\/us-east.stratum.slushpool.com:3333",
+        "Wallet Address": "bc1qblnakcrscdoxnydjelqloohfqnc",
+        "Worker Name": "buyer_worker_27",
+    },
+    {
+        "User ID": "buyer_0029",
+        "Username": "gregoryashley",
+        "Location": "Oregon, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1quqrneqgqsglfkiwflkrotphxu",
+        "Worker Name": "buyer_worker_28",
+    },
+    {
+        "User ID": "buyer_0030",
+        "Username": "april01",
+        "Location": "Nevada, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qgfhuqfutswmoajlqufgunnaool",
+        "Worker Name": "buyer_worker_29",
+    },
+    {
+        "User ID": "buyer_0031",
+        "Username": "reyesebony",
+        "Location": "Seoul, South Korea",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qmkzabtohmzwbrrosqeceiogmu",
+        "Worker Name": "buyer_worker_30",
+    },
+    {
+        "User ID": "buyer_0032",
+        "Username": "scottjoseph",
+        "Location": "Oregon, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qpecoeahffrmwrfgtxdxgkgjirq",
+        "Worker Name": "buyer_worker_31",
+    },
+    {
+        "User ID": "buyer_0033",
+        "Username": "salascindy",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qttdfjpreuapsaqmovnoclmirdugs",
+        "Worker Name": "buyer_worker_32",
+    },
+    {
+        "User ID": "buyer_0034",
+        "Username": "robertocopeland",
+        "Location": "California, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qohmmruvnqwvkrvobxyffbygevzooav",
+        "Worker Name": "buyer_worker_33",
+    },
+    {
+        "User ID": "buyer_0035",
+        "Username": "brandonwalsh",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/us2.ghash.io:3333",
+        "Wallet Address": "bc1qowrlfwfqzenqckrczqfxmlpkoks",
+        "Worker Name": "buyer_worker_34",
+    },
+    {
+        "User ID": "buyer_0036",
+        "Username": "melindajohnson",
+        "Location": "Ohio, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1qlnypzpgjuzxqpyiteurvcrbgsve",
+        "Worker Name": "buyer_worker_35",
+    },
+    {
+        "User ID": "buyer_0037",
+        "Username": "jeffreybrewer",
+        "Location": "New York, USA",
+        "Pool URL": "stratum+tcp:\/\/us-east.stratum.slushpool.com:3333",
+        "Wallet Address": "bc1quuhtvptyaykhmwcqzmxzgbtcigmj",
+        "Worker Name": "buyer_worker_36",
+    },
+    {
+        "User ID": "buyer_0038",
+        "Username": "tammy66",
+        "Location": "California, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qycuiiunnaegvvzcspdmxpcrdlvo",
+        "Worker Name": "buyer_worker_37",
+    },
+    {
+        "User ID": "buyer_0039",
+        "Username": "gwendolyn49",
+        "Location": "New York, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qkyndftfppkctqdijszoqfinbwcv",
+        "Worker Name": "buyer_worker_38",
+    },
+    {
+        "User ID": "buyer_0040",
+        "Username": "virginia53",
+        "Location": "Stockholm, Sweden",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qvtnalldmqfgydbvkzodlzzvptcqo",
+        "Worker Name": "buyer_worker_39",
+    },
+    {
+        "User ID": "buyer_0041",
+        "Username": "thomasgarcia",
+        "Location": "Sao Paulo, Brazil",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qbrokyeyymgpcnjiqkiawmqsimdbpii",
+        "Worker Name": "buyer_worker_40",
+    },
+    {
+        "User ID": "buyer_0042",
+        "Username": "brownangela",
+        "Location": "Oregon, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qymrgsjdtwhbknrugqqmoyqrhtvh",
+        "Worker Name": "buyer_worker_41",
+    },
+    {
+        "User ID": "buyer_0043",
+        "Username": "swilliams",
+        "Location": "New York, USA",
+        "Pool URL": "stratum+tcp:\/\/us-central.stratum.braiins.com:3333",
+        "Wallet Address": "bc1qfhinpfrvsgmdszftviuvgfkzyg",
+        "Worker Name": "buyer_worker_42",
+    },
+    {
+        "User ID": "buyer_0044",
+        "Username": "steven03",
+        "Location": "Georgia, USA",
+        "Pool URL": "stratum+tcp:\/\/sha256.poolbinance.com:8888",
+        "Wallet Address": "bc1qmgqjilxzhuieaxwmaerfzmmqlnf",
+        "Worker Name": "buyer_worker_43",
+    },
+    {
+        "User ID": "buyer_0045",
+        "Username": "jenna56",
+        "Location": "California, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.antpool.com:443",
+        "Wallet Address": "bc1quhonvakcjlsvmhirqjlyxytnngvqfk",
+        "Worker Name": "buyer_worker_44",
+    },
+    {
+        "User ID": "buyer_0046",
+        "Username": "mlyons",
+        "Location": "North Dakota, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qzmnfoxqrffxwmixqzbivehirnyneeb",
+        "Worker Name": "buyer_worker_45",
+    },
+    {
+        "User ID": "buyer_0047",
+        "Username": "james80",
+        "Location": "Georgia, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qszksysfwogvlvcqhmcdexrlhjhbs",
+        "Worker Name": "buyer_worker_46",
+    },
+    {
+        "User ID": "buyer_0048",
+        "Username": "bennettchristopher",
+        "Location": "Texas, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qzujntivyrysevrjctlhffhpans",
+        "Worker Name": "buyer_worker_47",
+    },
+    {
+        "User ID": "buyer_0049",
+        "Username": "ryan95",
+        "Location": "Nevada, USA",
+        "Pool URL": "stratum+tcp:\/\/us-east.stratum.slushpool.com:3333",
+        "Wallet Address": "bc1qydnvcurklybavekfijqmgqfizj",
+        "Worker Name": "buyer_worker_48",
+    },
+    {
+        "User ID": "buyer_0050",
+        "Username": "lallen",
+        "Location": "New York, USA",
+        "Pool URL": "stratum+tcp:\/\/btc.f2pool.com:3333",
+        "Wallet Address": "bc1qbnatowskwjmpeefkapriqvrzy",
+        "Worker Name": "buyer_worker_49",
+    },
+]
+
 
 class renterTool:
     def __init__(self, json_path: str):
         self.json_path = json_path
+        self._cached_data = None
+        self._cache_timestamp = None
 
     def retrieve(self) -> Dict[str, List[Dict[str, Any]]]:
         """
-        Retrieve the candidate data from the JSON file.
-        Assumes each line is a JSON object (JSONL format).
+        Retrieve the candidate data from the JSON file with caching.
         """
-        if not os.path.exists(self.json_path):
-            raise FileNotFoundError(f"File not found: {self.json_path}")
+        # if not os.path.exists(self.json_path):
+        #     raise FileNotFoundError(f"File not found: {self.json_path}")
 
+        # # Check if we have cached data and file hasn't been modified
+        # current_timestamp = os.path.getmtime(self.json_path)
+        # if self._cached_data is not None and self._cache_timestamp == current_timestamp:
+        #     return {"Retrieved Data": self._cached_data}
+
+        # try:
+        #     with open(self.json_path, "r") as f:
+        #         data = json.load(f)
+
+        #     # Cache the data and timestamp
+        #     self._cached_data = data
+        #     self._cache_timestamp = current_timestamp
         try:
-            with open(self.json_path, 'r') as f:
-                data = json.load(f)
-            return {"Retrieved Data": data}
+            return {"Retrieved Data": renter_data}
         except Exception as e:
             return {"error": str(e)}
+
 
 # if __name__ == "__main__":
 #     json_file_path = os.path.join("../Data", "buyer_data.json")

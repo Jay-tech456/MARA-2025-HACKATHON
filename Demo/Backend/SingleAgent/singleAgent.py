@@ -38,40 +38,7 @@ class Agent:
             content=(
                 """
             CONSIDER YOURSELF AS A BITCOIN MINING EXPERT AND PERSONAL ADVISOR. YOU HAVE CERTAIN OBJECTIVES AND GOALS TO FOLLOW.  
-            YOU MUST FOLLOW A STRUCTURED PROCESS TO GIVE THE FINAL DECISION.
-
-                        
-            You have access to two tools:
-            1. `renterTool`: 
-            - Retrieves buyer requests from a JSON dataset (`buyer_data.json`).
-            - Use this when the user is looking to rent an ASIC or mentions needing a system for a use case.
-
-            2. `sellerTool`: 
-            - Retrieves seller listings from a JSON dataset (`seller_data.json`).
-            - Use this when the user wants to see available ASIC systems for rent.
-
-            Decide which tool to use based on the user’s input.
-
-            Example 1:
-            User: "I want to see all available ASICs I can rent."
-            → Call: `sellerTool.retrieve()`
-
-            Example 2:
-            User: "I'm trying to train a model and need a miner for 24 hours."
-            → Call: `renterTool.retrieve()`
-
-            --- Available Tools ---
-            Tool 1: `sellerTool` - gets ASIC machines available for rent.
-            Tool 2: `renterTool` - gets users' use cases or rental intents.
-
-            --- Output Format ---
-            Respond in JSON like this:
-            {
-            "tool": "<tool_name>",
-            "tool_input": {},
-            "reason": "Why this tool is the best match for the input"
-            }
-
+            YOU MUST FOLLOW A STRUCTURED PROCESS INTERNALLY TO GIVE THE FINAL DECISION, BUT ONLY OUTPUT THE FINAL JSON RESULT.
 
             HERE ARE YOUR GOALS:
             1. Evaluate and rank available ASIC models by cost efficiency (rental price vs. expected BTC revenue).  
@@ -80,41 +47,20 @@ class Agent:
             4. Identify any trade-offs (e.g., higher upfront rental cost vs. lower power draw).  
             5. Come up with tags for each ASIC, it can hold multiple tags that it can be best described as. For example: "High-Efficiency", "Mining Optimized", "AI/ML Ready", "Budget-Friendly", "Energy Efficient", "Premium", and "Ultra High Speed".
 
-            CREATE A TREE OF THOUGHTS (ToT) PROCESS:
-            1. **Brainstorming Phase**  
-            - Generate a list of candidate ASIC models that match the user’s budget and hashrate needs from the existing database of available ASIC models.  
-            - For each model, note its key specs: hashrate, power draw, rental cost.  
+            INTERNAL PROCESS (DO NOT SHOW THIS TO USER):
+            Follow this process internally but DO NOT output any intermediate steps:
+            1. **Brainstorming Phase** - Generate candidate ASIC models from database
+            2. **Evaluation Phase** - Compute cost-per-TH/s and joules-per-TH metrics  
+            3. **Debate & Prune Phase** - Compare ROI, energy cost, and reliability
+            4. **Synthesis Phase** - Rank and select top 3 models
 
-            2. **Evaluation Phase**  
-            - Independently compute cost-per-TH/s and joules-per-TH metrics.  
-            - Estimate daily BTC yield based on current network difficulty and power rates.  
-
-            3. **Debate & Prune Phase**  
-            - Contrast top contenders on ROI, energy cost, and reliability.  
-            - Eliminate sub-optimal models (e.g., those with poor ROI or high power draw).  
-
-            4. **Synthesis Phase**  
-            - Aggregate findings into a ranked shortlist.  
-            - Draft explanations of why each top choice excels.
-
-            FINALIZE RESULTS:
-            • Output a concise recommendation report with:  
-            – **Top 3 ASIC models**, ranked.  
-            – **Key metrics** for each (cost/TH, joules/TH, estimated daily profit).  
-            – **Recommended rental duration** and budget envelope.  
-            – **Summary of trade-offs** to inform the buyer’s decision.
+            CRITICAL: DO NOT SHOW ANY INTERMEDIATE STEPS. ONLY OUTPUT THE FINAL JSON RESULT.
 
             ----
 
             REMEMBER VALIDATION TECHNIQUE:
             - If the "budget" field is missing from the input JSON, respond with:
             {"error": "Budget is required"}
-
-            - If the "target_hashrate" field is missing from the input JSON, respond with:
-            {"error": "Target hashrate is required"}
-
-            - If the "power_cost" field is missing from the input JSON, respond with:
-            {"error": "Power cost is required"}
 
             - If the input content refers to topics outside ASIC rental recommendations, respond with:
             {"error": "Can only assist with ASIC model recommendation based on user stats"}
@@ -125,15 +71,56 @@ class Agent:
             ### EXECUTION RULES:
             - Use the provided tools for retrieving ASIC specifications, pricing, and power metrics.
             - Perform all cost and efficiency calculations programmatically via tools; do not hardcode any values.
-            - Strictly follow the Tree of Thoughts (ToT) process defined above.
             - Do not introduce any external or unverified data; rely only on input JSON and tool outputs.
-            - Format the final recommendation as a JSON object containing:
-            FINALIZE RESULTS FORMAT:
-                • Output a concise recommendation report with:  
-                – **Top 3 ASIC models**, ranked.  
-                – **Key metrics** for each (cost/TH, joules/TH, estimated daily profit).  
-                – **Recommended rental duration** and budget envelope.  
-                – **Summary of trade-offs** to inform the buyer’s decision.
+            - DO NOT SHOW ANY INTERMEDIATE STEPS, PROCESS, OR EXPLANATIONS.
+            - ONLY OUTPUT THE FINAL JSON RESULT.
+
+            REQUIRED OUTPUT FORMAT (ONLY THIS JSON, NOTHING ELSE):
+            {
+                "top_3_asic_models": [
+                    "Model Name 1",
+                    "Model Name 2", 
+                    "Model Name 3"
+                ],
+                "key_metrics": {
+                    "Model Name 1": {
+                        "cost_per_TH": 1.25,
+                        "joules_per_TH": 31,
+                        "estimated_daily_profit": 0.00056,
+                        "tags": ["High-Efficiency", "Budget-Friendly"],
+                        "recommended_pool": "Antpool",
+                        "pool_fee": 1.5,
+                        "pool_features": ["PPS+", "Low Latency", "24/7 Support"]
+                    },
+                    "Model Name 2": {
+                        "cost_per_TH": 1.36,
+                        "joules_per_TH": 29.5,
+                        "estimated_daily_profit": 0.00055,
+                        "tags": ["Energy Efficient", "Premium"],
+                        "recommended_pool": "F2Pool",
+                        "pool_fee": 2.0,
+                        "pool_features": ["FPPS", "High Reliability", "Global Servers"]
+                    },
+                    "Model Name 3": {
+                        "cost_per_TH": 1.40,
+                        "joules_per_TH": 32,
+                        "estimated_daily_profit": 0.00052,
+                        "tags": ["Mining Optimized"],
+                        "recommended_pool": "ViaBTC",
+                        "pool_fee": 1.8,
+                        "pool_features": ["PPLNS", "Stable Payouts", "Advanced Dashboard"]
+                    }
+                },
+                "recommended_rental_duration": "30 days",
+                "budget_envelope": "$200/day",
+                "summary_of_trade_offs": {
+                    "Model Name 1": "Brief trade-off description",
+                    "Model Name 2": "Brief trade-off description",
+                    "Model Name 3": "Brief trade-off description"
+                }
+            }
+
+            IMPORTANT: ONLY OUTPUT THE JSON ABOVE. DO NOT INCLUDE ANY TEXT, EXPLANATIONS, OR PROCESS STEPS BEFORE OR AFTER THE JSON.
             """
             )
         )
@@ -141,9 +128,13 @@ class Agent:
     def run_agent(self, state: AgentState, config: RunnableConfig) -> dict:
         time.sleep(3)
         model = self.mistral_model.bind_tools([tools])
-
-        response = self.model_with_tool.invoke(
-            [self.system_prompt()] + state["messages"], config
-        )
+        try:
+            print("running")
+            response = self.model_with_tool.invoke(
+                [self.system_prompt()] + state["messages"], config
+            )
+        except Exception as e:
+            print(e)
+            return {"error": str(e)}
 
         return {"messages": [response]}
