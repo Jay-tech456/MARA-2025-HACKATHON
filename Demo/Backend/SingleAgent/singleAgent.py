@@ -42,7 +42,6 @@ class Agent:
 
                         
             You have access to two tools:
-
             1. `renterTool`: 
             - Retrieves buyer requests from a JSON dataset (`buyer_data.json`).
             - Use this when the user is looking to rent an ASIC or mentions needing a system for a use case.
@@ -106,8 +105,6 @@ class Agent:
             – **Summary of trade-offs** to inform the buyer’s decision.
 
             ----
-            INPUT: User stats JSON:  
-            {resume_and_job_description}
 
             REMEMBER VALIDATION TECHNIQUE:
             - If the "budget" field is missing from the input JSON, respond with:
@@ -131,18 +128,12 @@ class Agent:
             - Strictly follow the Tree of Thoughts (ToT) process defined above.
             - Do not introduce any external or unverified data; rely only on input JSON and tool outputs.
             - Format the final recommendation as a JSON object containing:
-            {
-                "recommendations": [
-                {
-                    "model": "<ASIC model>",
-                    "cost_per_th": "<value>",
-                    "power_efficiency": "<value>",
-                    "estimated_profit": "<value>"
-                },
-                ...
-                ]
-            }
-            - Output must be valid JSON with no additional commentary or text.
+            FINALIZE RESULTS FORMAT:
+                • Output a concise recommendation report with:  
+                – **Top 3 ASIC models**, ranked.  
+                – **Key metrics** for each (cost/TH, joules/TH, estimated daily profit).  
+                – **Recommended rental duration** and budget envelope.  
+                – **Summary of trade-offs** to inform the buyer’s decision.
             """
             )
         )
