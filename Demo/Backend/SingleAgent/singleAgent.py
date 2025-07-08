@@ -22,7 +22,7 @@ class Agent:
         self.mistral_model = ChatMistralAI(
             model="mistral-large-latest",
             temperature=0,
-            api_key="b5BKS19Dnp3ypIzvT03pDrqFDr970XcJ",
+            api_key=os.getenv("MISTRAl_API_KEY"),
         )
 
         # embeddings = OllamaEmbeddings(model="nomic-embed-text")
